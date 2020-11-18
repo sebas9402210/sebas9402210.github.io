@@ -1,0 +1,99 @@
+---
+title: "¿Qué tan cerca estoy de la ubicación de mis compañeras y compañeros?"
+author: "Uriel,Santiago,Sebastian,Emilio,Anahi"
+date: "11/11/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+library(ggplot2) #Gráficas más bonitas
+library(plotly) #Gráficas interactivas
+library(ggmap) #Mapas
+```
+
+### I. Creando nuestros datos
+
+Primero, crearemos un vector con cada uno de los nombres de la personas y los datos de la latitus y longitud del lugar de la República Mexicana al que les gustaría viajar. Posteriormente, mediante la función `rbind` crearemos una matriz por columnas con los datos de las ubicaciones a las que nos gustaría viajar:
+
+```{r}
+Uriel<-c(-92.6367,16.7376)
+Santiago<-c(-87.466,20.212)
+Sebastian<-c(-106.4531,23.2420)
+Emilio<-c(-86.8465,19.43)
+Anahi<-c(-74.2973,4.5708)
+viajes<-rbind(Uriel,Santiago,Sebastian,Emilio,Anahi)
+viajes
+```
+
+### II. Cambiando el nombre de nuestras columnas
+
+Una vez que hemos creado nuestra matriz de datos, cambiaremos el nombre de nuestras columnas con la función `colnames`:
+
+```{r}
+colnames(viajes)<-c("Longitud","Latitud")
+viajes
+```
+
+### III. Transformando nuestra matriz en un data.frame
+
+Recuerda que para hacer gráficas con `ggplot` y mapas con `qmplot` necesitamos un data frame. Vamos a transformar nuestra matriz en un data.frame de la siguiente forma:
+
+```{r}
+viajes<-data.frame(viajes)
+viajes
+```
+
+### IV. Creando una gráfica de dispersión con nombres y puntos
+
+Podemos crear una grafica de dispersión y usar los nombres como etiqueta si utilizamos la función `ggplot` junto con `geom_text`; además, podemos agregar puntos a nuestra gráfica con la función `geom_point`. Finalmente, si queremos que nuestra gráfica sea interactiva, utilizamos la función `ggplotly`:
+
+```{r}
+dispersion<-ggplot(viajes)+geom_text(aes(Latitud,Longitud),label= rownames(viajes))+geom_point(aes(Latitud,Longitud),color= rainbow(5))
+ggplotly(dispersion)
+```
+
+### V. Creando un mapa
+
+Para crear un mapa, utilizaremos la funcion `qmplot`:
+
+```{r message=FALSE, warning=FALSE
+qmplot(Longitud, Latitud, data=viajes, color=I(rainbow(4)))
+```
+
+### VI. Mapa de puntos y denssidad
+
+Podemos agregar el parámetro `geom = c("point","density2d")` para hacer un mapa de puntos y densidad:
+
+```{r message=FALSE, warning=FALSE}
+qmplot(Longitud, Latitud, data=viajes, geom=c("point","density2d"))
+```
+
+### VII. Preguntas
+
+### 1.- ¿Cómo están distribuidas sus ubicaciones?
+a excepcion de Anahi y Sebastian, tanto Santiago, Emilio y Uriel se encuentran mas cerca
+
+Respuesta 1
+
+### 2.- Si tuvieras que pensar en una función que pasara por todas sus ubicaciones, ¿qué tipo de función sería?
+
+Respuesta 2
+Una funcion racional 
+
+### 3.- ¿Consideras que graficar la ubicación de una persona en un mapa tiene un valor económico? ¿Por qué?
+
+Respuesta 3
+
+Para saber el tamaño de la poblacion y considerar si es un potencial agente economico y analizar el inpacto de las diferentes actividades economicas.
+### 4.- ¿Hasta ahora qué han aprendido en el curso?
+
+Respuesta 4
+A familiarizarnos con lenguaje de programacion R y conocer sus caracteristicas yfunciones.
+
+
+
+__________________________________________________________________________ 
+
+<p style="font-size: 50%">Esta obra fue generada mediante R en `r format(Sys.Date(), format = "%B %d, %Y")` y forma parte de las actividades realizadas en las materias de [Matemáticas I y Taller III](https://mateytaller.github.io/), [Facultad de Economía, UNAM](http://economia.unam.mx/). </br>Esta obra está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">licencia de Creative Commons Reconocimiento-NoComercial-CompartirIgual 4.0 Internacional. </a>[Creative Commons (CC)](http://creativecommons.org/licenses/by-nc-sa/4.0/).<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licencia de Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a></p>
